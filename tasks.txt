@@ -1,0 +1,69 @@
+Project Summary:
+
+Title: Subreddit Sentiment Tracker (MVP)
+
+Objective: The goal of this project is to create a Minimum Viable Product (MVP) for a web application that tracks the sentiment of recent comments in a select group of popular subreddits, similar to a stock tracking app. The app will collect comments using the Reddit API, analyze their sentiment using TextBlob, calculate the average sentiment score for each subreddit, and display the scores in a simple table on a web interface. Users will be able to refresh the sentiment scores manually and sort subreddits based on their sentiment scores.
+
+Context: This project is intended to validate the concept of tracking subreddit sentiment in real-time and determine if it is interesting and useful enough to warrant further development. The MVP will serve as a foundation for a more feature-rich application if the concept proves successful. The tasks provided are designed to be small, manageable steps to be completed by an AI+human collaboration team. The team should keep in mind that this is an MVP and focus on basic functionality and accuracy, with the potential for future expansion.
+
+Completed tasks:
+
+Task 1: Compile a list of popular subreddits
+
+Goal: Create a list of 10 popular and active subreddits to track for the MVP.
+Instructions: Research and select 10 subreddits with high engagement and diverse topics.
+Output: A text file containing the names of the selected subreddits.
+
+Task 2: Set up a Python environment and install necessary libraries
+
+Goal: Prepare the development environment for data collection and sentiment analysis.
+Instructions: Install Python and necessary libraries, including BeautifulSoup and TextBlob.
+Output: A requirements.txt file listing the libraries and their versions.
+
+Task 3: Write a script to scrape comments from selected subreddits
+
+Goal: Create a Python script to collect recent comments from the subreddits using web scraping.
+Instructions: Use the requests and BeautifulSoup libraries to scrape a fixed number of recent comments from each subreddit's webpage.
+Output: A Python script (scrape_comments.py) that retrieves and saves comments in a JSON or CSV file.
+
+
+To do:
+
+Task 4: Write a script to perform sentiment analysis on collected comments
+
+Goal: Create a Python script to calculate sentiment polarity for each comment using TextBlob.
+Instructions: Process the collected comments, calculate sentiment polarity, and compute the average sentiment score for each subreddit.
+Output: A Python script (sentiment_analysis.py) that reads comments from the output file of Task 3 and generates a JSON or CSV file with average sentiment scores.
+
+Task 5: Set up a simple Flask web application
+
+Goal: Create a basic web application using Flask to display the subreddit sentiment scores.
+Instructions: Install Flask and set up a minimal project structure, with a main.py file for the application logic and a templates folder for HTML files.
+Output: A main.py file with the Flask application setup and a folder named "templates" for storing HTML files.
+
+Task 6: Create an HTML template for displaying sentiment scores
+
+Goal: Design a simple HTML table to display subreddit names and their average sentiment scores.
+Instructions: Create an HTML file (index.html) with a table structure and basic CSS styles to display subreddit sentiment scores. Add sorting functionality using JavaScript.
+Output: An HTML file (index.html) with a table for displaying sentiment scores and basic sorting functionality.
+
+Task 7: Integrate data collection and sentiment analysis with the Flask application
+
+Goal: Connect the Flask application with the Python scripts for data collection and sentiment analysis.
+Instructions: Modify the main.py file to run the scripts from Tasks 3 and 4, and load the calculated sentiment scores into the HTML table.
+Output: An updated main.py file that integrates the data collection and sentiment analysis scripts and serves the HTML table with sentiment scores.
+
+Task 8: Add a refresh button to the web interface
+
+Goal: Implement a manual refresh button to update sentiment scores on demand.
+Instructions: Update the index.html file to include a refresh button that triggers data collection and sentiment analysis when clicked, then updates the displayed sentiment scores.
+Output: An updated index.html file with a refresh button and JavaScript code to trigger data collection and sentiment analysis.
+
+Task 9: Test the MVP for accuracy and functionality
+
+Goal: Ensure that the MVP works as expected and provides reasonably accurate sentiment analysis results.
+Instructions: Test the entire system, from data collection and sentiment analysis to the web interface and refresh functionality. Note any issues and make necessary adjustments.
+Output: A brief testing report in a text file describing the tests performed, any issues encountered, and the fixes applied.
+
+Task 10: Write a README file
+
