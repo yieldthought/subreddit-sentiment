@@ -41,8 +41,31 @@
             {% endfor %}
         </tbody>
     </table>
+    <button onclick="updateSentiments()">Update Sentiments</button>
 
     <script>
+        function updateSentiments() {
+		  fetch('/update', {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json'
+			}
+		  })
+		  .then(response => response.json())
+		  .then(data => {
+			let table = document.getElementById('sentiments');
+			let tbody = table.getElementsByTagName('tbody')[0];
+			tbody.innerHTML = '';
+
+			for (const subreddit in data) {
+			  let row = tbody.insertRow();
+			  let cell1 = row.insertCell(0);
+			  let cell2 = row.insertCell(1);
+			  cell1.innerHTML = subreddit;
+			  cell2.innerHTML = data[subreddit];
+			}
+		  });
+		}
         function sortTable(n) {
           var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
           table = document.getElementById("sentiments");
