@@ -1,25 +1,33 @@
 import json
 from flask import Flask, render_template, request
-from scrape_and_analyze import collect_comments_from_subreddits, calculate_sentiment_scores
+import scrape_and_analyze as sa
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    with open('sentiments.json', 'r') as f:
-        sentiment_scores = json.load(f)
+    sentiment_data = {}
 
-    return render_template('index.html', sentiment_scores=sentiment_scores)
+    if request.method == 'POST':
+        # Run the data collection and sentiment analysis scripts
+        #comments = sa.collect_comments_from_subreddits()
+        #sentiment_data = sa.calculate_sentiment_scores(comments)
+        pass
+
+    # Load the sentiment scores from the sentiments.json file
+    with open('sentiments.json', 'r') as f:
+        sentiment_data = json.load(f)
+
+    return render_template('index.html', sentiment_data=sentiment_data)
 
 @app.route('/update', methods=['POST'])
 def update_sentiments():
-    comments = collect_comments_from_subreddits()
-    updated_sentiment_scores = calculate_sentiment_scores(comments)
+    # Run the data collection and sentiment analysis scripts
+    comments = sa.collect_comments_from_subreddits()
+    sentiment_data = sa.calculate_sentiment_scores(comments)
 
-    with open('sentiments.json', 'w') as f:
-        json.dump(updated_sentiment_scores, f)
-
-    return json.dumps(updated_sentiment_scores)
+    return json.dumps(sentiment_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
+

@@ -2,107 +2,107 @@
 <html>
 <head>
     <title>Subreddit Sentiment Scores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #222;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
-
-        th, td {
-            text-align: left;
-            padding: 8px;
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
         }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .chart-container {
+            position: relative;
+            width: 400px;
+            height: 300px;
         }
-
-        th {
+        .update-button {
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            color: #f0f0f0;
             background-color: #4CAF50;
-            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .update-button:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
         }
     </style>
 </head>
 <body>
     <h1>Subreddit Sentiment Scores</h1>
-    <table id="sentiments">
-        <thead>
-            <tr>
-                <th onclick="sortTable(0)">Subreddit</th>
-                <th onclick="sortTable(1)">Sentiment Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for subreddit in sentiments %}
-            <tr>
-                <td>{{ subreddit }}</td>
-                <td>{{ sentiments[subreddit] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <button onclick="updateSentiments()">Update Sentiments</button>
+    <div class="container">
+        {% for subreddit in sentiment_data %}
+        <div class="chart-container">
+            <canvas id="{{ subreddit }}"></canvas>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="update-button" onclick="updateSentiments()">Update Sentiments</button>
 
     <script>
-        function updateSentiments() {
-		  fetch('/update', {
-			method: 'POST',
-			headers: {
-			  'Content-Type': 'application/json'
-			}
-		  })
-		  .then(response => response.json())
-		  .then(data => {
-			let table = document.getElementById('sentiments');
-			let tbody = table.getElementsByTagName('tbody')[0];
-			tbody.innerHTML = '';
-
-			for (const subreddit in data) {
-			  let row = tbody.insertRow();
-			  let cell1 = row.insertCell(0);
-			  let cell2 = row.insertCell(1);
-			  cell1.innerHTML = subreddit;
-			  cell2.innerHTML = data[subreddit];
-			}
-		  });
-		}
-        function sortTable(n) {
-          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-          table = document.getElementById("sentiments");
-          switching = true;
-          dir = "asc";
-          while (switching) {
-            switching = false;
-            rows = table.rows;
-            for (i = 1; i < (rows.length - 1); i++) {
-              shouldSwitch = false;
-              x = rows[i].getElementsByTagName("TD")[n];
-              y = rows[i + 1].getElementsByTagName("TD")[n];
-              if (dir == "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                  shouldSwitch= true;
-                  break;
+        const sentiments = {{ sentiment_data|tojson }};
+        const chartColors = ['#4CAF50', '#FF9800', '#2196F3', '#9C27B0', '#FF5722', '#009688', '#03A9F4', '#8BC34A', '#CDDC39', '#F44336'];
+    
+        for (const subreddit in sentiments) {
+            const monthNames = sentiments[subreddit].reverse().map(monthData => monthData.name);
+            const monthValues = sentiments[subreddit].reverse().map(monthData => monthData.value);
+    
+            const ctx = document.getElementById(subreddit).getContext('2d');
+            const data = {
+                labels: monthNames,
+                datasets: [{
+                    label: subreddit,
+                    data: monthValues,
+                    borderColor: chartColors.pop(),
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: false,
+                }]
+            };
+            const options = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
-              } else if (dir == "desc") {
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                  shouldSwitch= true;
-                  break;
-                }
-              }
-            }
-            if (shouldSwitch) {
-              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-              switching = true;
-              switchcount ++;
-            } else {
-              if (switchcount == 0 && dir == "asc") {
-                dir = "desc";
-                switching = true;
-              }
-            }
-          }
+            };
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: options
+            });
         }
-    </script>
-
+    
+        function updateSentiments() {
+            fetch('/update', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                location.reload();
+            });
+        }
+    </script>    
 </body>
 </html>
