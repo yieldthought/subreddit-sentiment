@@ -1,3 +1,14 @@
+# Subreddit Sentiment Analysis
+
+Like stock charts but for subreddit sentiment. A picture is worth a thousand words:
+
+![screenshot.png](screenshot.png)
+
+Coded mostly by GPT4, hence the awful code quality. Works though!
+
+
+# GPT-4 prompts
+
 Project Summary:
 
 Title: Subreddit Sentiment Tracker (MVP)
